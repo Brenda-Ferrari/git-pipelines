@@ -1,0 +1,24 @@
+name: Deploy Dev
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o código da dev
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+
+      - name: Build
+        run: |
+          mkdir dist
+          cp index.html dist/
+
+      - name: Publicar no Netlify (desenvolvimento)
+        run: npx netlify-cli deploy --prod --dir=dist
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID_DEV }}
