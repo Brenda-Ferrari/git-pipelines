@@ -1,22 +1,23 @@
-name: Deploy no Netlify
+name: Deploy Main
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Baixar o código
+      - name: Baixar o código da main
         uses: actions/checkout@v4
+        with:
+          ref: main
 
-      - name: Build (empacotar o artefato)
+      - name: Build
         run: |
           mkdir dist
           cp index.html dist/
 
-      - name: Publicar no Netlify
+      - name: Publicar no Netlify (principal)
         run: npx netlify-cli deploy --prod --dir=dist
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
